@@ -1,0 +1,3020 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Patients | MediCare Plus
+    </title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f7f9;
+
+            color: #263238;
+
+        }
+
+
+        /* =================================================
+           MAIN LAYOUT
+        ================================================= */
+
+        .page-wrapper {
+
+            min-height: 100vh;
+
+            display: flex;
+
+        }
+
+
+        /* =================================================
+           SIDEBAR
+        ================================================= */
+
+        .sidebar {
+
+            width: 250px;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0d526f 0%,
+                    #083c53 100%
+                );
+
+            color: white;
+
+            padding: 25px 18px;
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            bottom: 0;
+
+            overflow-y: auto;
+
+        }
+
+
+        .brand {
+
+            text-align: center;
+
+            padding-bottom: 25px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .brand-logo {
+
+            width: 55px;
+
+            height: 55px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: #0d526f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: 0 auto 12px;
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+        }
+
+
+        .brand h2 {
+
+            margin: 0;
+
+            font-size: 21px;
+
+            letter-spacing: 0.5px;
+
+        }
+
+
+        .brand p {
+
+            margin: 5px 0 0;
+
+            font-size: 11px;
+
+            opacity: 0.75;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .menu-title {
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            opacity: 0.55;
+
+            margin:
+                20px
+                10px
+                10px;
+
+        }
+
+
+        .menu-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: rgba(255,255,255,0.85);
+
+            padding:
+                12px
+                13px;
+
+            border-radius: 8px;
+
+            margin-bottom: 5px;
+
+            font-size: 14px;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+
+        }
+
+
+        .menu-link:hover {
+
+            background:
+                rgba(255,255,255,0.10);
+
+            color: white;
+
+        }
+
+
+        .menu-link.active {
+
+            background:
+                rgba(255,255,255,0.16);
+
+            color: white;
+
+        }
+
+
+        .menu-icon {
+
+            width: 24px;
+
+            text-align: center;
+
+            font-size: 16px;
+
+        }
+
+
+        /* =================================================
+           MAIN CONTENT
+        ================================================= */
+
+        .main-content {
+
+            margin-left: 250px;
+
+            width: calc(100% - 250px);
+
+            min-height: 100vh;
+
+            padding: 30px;
+
+        }
+
+
+        /* =================================================
+           TOP BAR
+        ================================================= */
+
+        .top-bar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .page-title h1 {
+
+            margin: 0;
+
+            font-size: 28px;
+
+            color: #123f52;
+
+        }
+
+
+        .page-title p {
+
+            margin:
+                6px
+                0
+                0;
+
+            color: #71808a;
+
+            font-size: 14px;
+
+        }
+
+
+        .user-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .user-avatar {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #0d526f;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+        }
+
+
+        .user-details {
+
+            text-align: right;
+
+        }
+
+
+        .user-details strong {
+
+            display: block;
+
+            color: #263238;
+
+            font-size: 14px;
+
+        }
+
+
+        .user-details span {
+
+            color: #81909a;
+
+            font-size: 12px;
+
+        }
+
+
+        /* =================================================
+           CONTENT CARD
+        ================================================= */
+
+        .content-card {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 5px 22px
+                rgba(25,55,70,0.07);
+
+        }
+
+
+        /* =================================================
+           TOOLBAR
+        ================================================= */
+
+        .toolbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .search-form {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+        .search-input {
+
+            width: 280px;
+
+            height: 42px;
+
+            border:
+                1px solid
+                #d5dfe4;
+
+            border-radius: 8px;
+
+            padding:
+                0
+                13px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .search-input:focus {
+
+            border-color: #0d526f;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(13,82,111,0.10);
+
+        }
+
+
+        .search-button {
+
+            height: 42px;
+
+            padding:
+                0
+                18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #0d526f;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .search-button:hover {
+
+            background: #083c53;
+
+        }
+
+
+        .clear-button {
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                0
+                14px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: #60727c;
+
+            background: #edf2f4;
+
+            font-size: 14px;
+
+        }
+
+
+        .clear-button:hover {
+
+            background: #e2e9ec;
+
+        }
+
+
+        .add-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 42px;
+
+            padding:
+                0
+                18px;
+
+            background: #0d526f;
+
+            color: white;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .add-button:hover {
+
+            background: #083c53;
+
+        }
+
+
+        /* =================================================
+           TABLE
+        ================================================= */
+
+        .table-container {
+
+            width: 100%;
+
+            overflow-x: auto;
+
+            border:
+                1px solid
+                #e4eaed;
+
+            border-radius: 10px;
+
+        }
+
+
+        .patient-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+
+        }
+
+
+        .patient-table th {
+
+            background: #f1f6f8;
+
+            color: #49606c;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+
+            text-align: left;
+
+            padding:
+                14px
+                15px;
+
+            border-bottom:
+                1px solid
+                #dfe7ea;
+
+        }
+
+
+        .patient-table td {
+
+            padding:
+                15px;
+
+            border-bottom:
+                1px solid
+                #edf1f3;
+
+            font-size: 14px;
+
+            color: #4b5d66;
+
+            vertical-align: middle;
+
+        }
+
+
+        .patient-table tbody tr:hover {
+
+            background: #fafcfd;
+
+        }
+
+
+        .patient-table tbody tr:last-child td {
+
+            border-bottom: none;
+
+        }
+
+
+        .patient-id {
+
+            font-weight: 700;
+
+            color: #0d526f !important;
+
+        }
+
+
+        /* =================================================
+           ACTION BUTTONS
+        ================================================= */
+
+        .action-buttons {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .action-buttons a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 34px;
+
+            padding:
+                0
+                10px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            white-space: nowrap;
+
+        }
+
+
+        .edit-button {
+
+            background: #e7f2f7;
+
+            color: #0d526f;
+
+        }
+
+
+        .edit-button:hover {
+
+            background: #d6eaf2;
+
+        }
+
+
+        .delete-button {
+
+            background: #fdecec;
+
+            color: #b42323;
+
+        }
+
+
+        .delete-button:hover {
+
+            background: #f9dddd;
+
+        }
+
+
+        .pdf-button {
+
+            background: #f1ecfb;
+
+            color: #6941a5;
+
+        }
+
+
+        .pdf-button:hover {
+
+            background: #e7def7;
+
+        }
+
+
+        .action-buttons a:not(
+            .edit-button
+        ):not(
+            .delete-button
+        ):not(
+            .pdf-button
+        ) {
+
+            background: #edf7ee;
+
+            color: #28763a;
+
+        }
+
+
+        .action-buttons a:not(
+            .edit-button
+        ):not(
+            .delete-button
+        ):not(
+            .pdf-button
+        ):hover {
+
+            background: #dff0e1;
+
+        }
+
+
+        /* =================================================
+           PAGINATION
+        ================================================= */
+
+        .pagination {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 22px;
+
+            color: #657780;
+
+            font-size: 13px;
+
+        }
+
+
+        .pagination-link {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 36px;
+
+            padding:
+                0
+                14px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            color: #0d526f;
+
+            background: #eaf2f5;
+
+            font-weight: 600;
+
+        }
+
+
+        .pagination-link:hover {
+
+            background: #dbe9ee;
+
+        }
+
+
+        /* =================================================
+           EMPTY STATE
+        ================================================= */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 70px 20px;
+
+        }
+
+
+        .empty h3 {
+
+            margin:
+                0
+                0
+                8px;
+
+            color: #334e5a;
+
+            font-size: 20px;
+
+        }
+
+
+        .empty p {
+
+            color: #81909a;
+
+            margin:
+                0
+                0
+                22px;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =================================================
+           MESSAGES
+        ================================================= */
+
+        .messages-container {
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .message {
+
+            padding:
+                12px
+                15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+
+        }
+
+
+        .message.success {
+
+            background: #e9f7ec;
+
+            color: #256b34;
+
+        }
+
+
+        .message.error {
+
+            background: #fdecec;
+
+            color: #a52727;
+
+        }
+
+
+        .message.warning {
+
+            background: #fff6df;
+
+            color: #806000;
+
+        }
+
+
+        /* =================================================
+           AJAX MODAL
+        ================================================= */
+
+        .patient-edit-modal {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            background:
+                rgba(10, 31, 42, 0.60);
+
+            padding: 30px;
+
+            overflow-y: auto;
+
+        }
+
+
+        .patient-edit-modal.show {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: center;
+
+        }
+
+
+        .patient-edit-modal-content {
+
+            width: min(
+                900px,
+                100%
+            );
+
+            background: white;
+
+            border-radius: 16px;
+
+            margin:
+                10px
+                auto;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.25);
+
+            overflow: hidden;
+
+            animation:
+                modalOpen
+                0.18s
+                ease-out;
+
+        }
+
+
+        @keyframes modalOpen {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-15px)
+                    scale(0.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        .ajax-edit-form {
+
+            width: 100%;
+
+        }
+
+
+        .ajax-edit-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                22px
+                28px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0d526f,
+                    #126986
+                );
+
+            color: white;
+
+        }
+
+
+        .ajax-edit-header h2 {
+
+            margin: 0;
+
+            font-size: 21px;
+
+        }
+
+
+        .ajax-close-button {
+
+            width: 36px;
+
+            height: 36px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.14);
+
+            color: white;
+
+            font-size: 25px;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+        }
+
+
+        .ajax-close-button:hover {
+
+            background:
+                rgba(255,255,255,0.25);
+
+        }
+
+
+        #ajax-patient-edit-form {
+
+            padding: 28px;
+
+        }
+
+
+        .ajax-form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+            gap: 20px;
+
+        }
+
+
+        .ajax-form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+        }
+
+
+        .ajax-form-group.ajax-full {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        .ajax-form-group label {
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #405761;
+
+        }
+
+
+        .ajax-form-group input,
+        .ajax-form-group select,
+        .ajax-form-group textarea {
+
+            width: 100%;
+
+            min-height: 42px;
+
+            padding:
+                10px
+                12px;
+
+            border:
+                1px solid
+                #d4dfe3;
+
+            border-radius: 7px;
+
+            background: white;
+
+            color: #263238;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .ajax-form-group textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
+        }
+
+
+        .ajax-form-group input:focus,
+        .ajax-form-group select:focus,
+        .ajax-form-group textarea:focus {
+
+            border-color: #0d526f;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(13,82,111,0.09);
+
+        }
+
+
+        .ajax-form-group input[type="file"] {
+
+            padding:
+                8px;
+
+        }
+
+
+        .current-file {
+
+            font-size: 12px;
+
+            color: #71808a;
+
+            margin-top: 2px;
+
+        }
+
+
+        .current-file a {
+
+            color: #0d526f;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+        }
+
+
+        .current-file a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        .error {
+
+            color: #c62828;
+
+            font-size: 12px;
+
+        }
+
+
+        .form-errors {
+
+            background: #fdecec;
+
+            border:
+                1px solid
+                #f2caca;
+
+            color: #a52727;
+
+            padding:
+                11px
+                13px;
+
+            border-radius: 7px;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+
+        }
+
+
+        .ajax-form-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 28px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid
+                #edf1f3;
+
+        }
+
+
+        .ajax-form-actions button {
+
+            min-height: 42px;
+
+            padding:
+                0
+                20px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+
+        .save-button {
+
+            background: #0d526f;
+
+            color: white;
+
+        }
+
+
+        .save-button:hover {
+
+            background: #083c53;
+
+        }
+
+
+        .save-button:disabled {
+
+            opacity: 0.65;
+
+            cursor: wait;
+
+        }
+
+
+        .cancel-button {
+
+            background: #edf2f4;
+
+            color: #52646d;
+
+        }
+
+
+        .cancel-button:hover {
+
+            background: #e1e8eb;
+
+        }
+
+
+        /* =================================================
+           AJAX DELETE
+        ================================================= */
+
+        .ajax-delete-card {
+
+            width: 500px;
+
+            max-width: 100%;
+
+            background: white;
+
+            padding: 45px;
+
+            border-radius: 16px;
+
+            text-align: center;
+
+        }
+
+
+        .ajax-delete-icon {
+
+            width: 70px;
+
+            height: 70px;
+
+            margin:
+                0 auto 22px;
+
+            border-radius: 50%;
+
+            background: #fff0f0;
+
+            color: #dc3545;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 36px;
+
+            font-weight: bold;
+
+        }
+
+
+        .ajax-delete-card h2 {
+
+            margin:
+                0 0 16px;
+
+            color: #164966;
+
+            font-size: 28px;
+
+        }
+
+
+        .ajax-delete-message {
+
+            color: #6d8498;
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .ajax-patient-name {
+
+            color: #164966;
+
+            font-weight: bold;
+
+        }
+
+
+        .ajax-delete-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 14px;
+
+        }
+
+
+        .ajax-confirm-delete,
+        .ajax-cancel-delete {
+
+            min-height: 42px;
+
+            padding:
+                0
+                24px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+        }
+
+
+        .ajax-confirm-delete {
+
+            background: #dc3545;
+
+            color: white;
+
+        }
+
+
+        .ajax-confirm-delete:hover {
+
+            background: #bb2d3b;
+
+        }
+
+
+        .ajax-cancel-delete {
+
+            background: #edf2f4;
+
+            color: #52646d;
+
+        }
+
+
+        .ajax-cancel-delete:hover {
+
+            background: #e1e8eb;
+
+        }
+
+
+        .delete-button:disabled {
+
+            opacity: 0.6;
+
+            cursor: wait;
+
+        }
+
+
+        /* =================================================
+           AJAX LOADING / ERROR
+        ================================================= */
+
+        .ajax-loading {
+
+            padding:
+                70px
+                20px;
+
+            text-align: center;
+
+            color: #60747e;
+
+            font-size: 14px;
+
+        }
+
+
+        .ajax-error {
+
+            padding:
+                40px
+                25px;
+
+            text-align: center;
+
+            color: #a52727;
+
+        }
+
+
+        .ajax-error button {
+
+            margin-top: 15px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            padding:
+                10px
+                18px;
+
+            background: #0d526f;
+
+            color: white;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (
+            max-width: 900px
+        ) {
+
+            .sidebar {
+
+                width: 210px;
+
+            }
+
+
+            .main-content {
+
+                margin-left: 210px;
+
+                width:
+                    calc(
+                        100% - 210px
+                    );
+
+                padding: 20px;
+
+            }
+
+
+            .ajax-form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .ajax-form-group.ajax-full {
+
+                grid-column: auto;
+
+            }
+
+        }
+
+
+        @media (
+            max-width: 700px
+        ) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                min-height: auto;
+
+            }
+
+
+            .page-wrapper {
+
+                display: block;
+
+            }
+
+
+            .main-content {
+
+                margin-left: 0;
+
+                width: 100%;
+
+                padding: 15px;
+
+            }
+
+
+            .top-bar {
+
+                align-items: flex-start;
+
+            }
+
+
+            .user-details {
+
+                display: none;
+
+            }
+
+
+            .toolbar {
+
+                align-items: stretch;
+
+                flex-direction: column;
+
+            }
+
+
+            .search-form {
+
+                width: 100%;
+
+            }
+
+
+            .search-input {
+
+                width: 100%;
+
+                flex: 1;
+
+            }
+
+
+            .patient-edit-modal {
+
+                padding: 10px;
+
+            }
+
+
+            #ajax-patient-edit-form {
+
+                padding: 20px;
+
+            }
+
+
+            .ajax-delete-card {
+
+                padding: 30px 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-wrapper">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                +
+            </div>
+
+            <h2>
+                MediCare Plus
+            </h2>
+
+            <p>
+                HOSPITAL MANAGEMENT SYSTEM
+            </p>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+
+        <a
+            href="{% url 'home' %}"
+            class="menu-link"
+        >
+
+            <span class="menu-icon">
+                🏠
+            </span>
+
+            Dashboard
+
+        </a>
+
+
+        <a
+            href="{% url 'patient_list' %}"
+            class="menu-link active"
+        >
+
+            <span class="menu-icon">
+                👤
+            </span>
+
+            Patients
+
+        </a>
+
+
+        <a
+            href="{% url 'doctor_list' %}"
+            class="menu-link"
+        >
+
+            <span class="menu-icon">
+                🩺
+            </span>
+
+            Doctors
+
+        </a>
+
+
+        <a
+            href="{% url 'appointment_list' %}"
+            class="menu-link"
+        >
+
+            <span class="menu-icon">
+                📅
+            </span>
+
+            Appointments
+
+        </a>
+
+
+        <div class="menu-title">
+            Account
+        </div>
+
+
+        <a
+            href="/admin/"
+            class="menu-link"
+        >
+
+            <span class="menu-icon">
+                ⚙
+            </span>
+
+            Administration
+
+        </a>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="menu-link"
+        >
+
+            <span class="menu-icon">
+                🚪
+            </span>
+
+            Logout
+
+        </a>
+
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================= -->
+
+    <main class="main-content">
+
+
+        <div class="top-bar">
+
+
+            <div class="page-title">
+
+                <h1>
+                    Patients
+                </h1>
+
+                <p>
+                    Manage registered patient records
+                </p>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <div class="user-details">
+
+                    <strong>
+                        {{ request.user.email }}
+                    </strong>
+
+                    <span>
+                        MediCare Plus User
+                    </span>
+
+                </div>
+
+
+                <div class="user-avatar">
+                    {{ request.user.email|first|upper }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MESSAGES
+        ================================================= -->
+
+        {% if messages %}
+
+            <div class="messages-container">
+
+                {% for message in messages %}
+
+                    <div
+                        class="message {{ message.tags }}"
+                    >
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================= -->
+
+        <div class="content-card">
+
+
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
+
+
+                <form
+                    method="GET"
+                    class="search-form"
+                >
+
+                    {% csrf_token %}
+
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        placeholder="Search by Patient ID..."
+                        class="search-input"
+                        autocomplete="off"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="search-button"
+                    >
+                        Search
+                    </button>
+
+
+                    {% if search %}
+
+                        <a
+                            href="{% url 'patient_list' %}"
+                            class="clear-button"
+                        >
+                            Clear
+                        </a>
+
+                    {% endif %}
+
+                </form>
+
+
+                <a
+                    href="{% url 'patient_create' %}"
+                    class="add-button"
+                >
+                    + Add Patient
+                </a>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 PATIENT TABLE
+            ================================================= -->
+
+            <div id="patient-table-section">
+
+                {% include 'patients/partials/patient_table.html' %}
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =====================================================
+     AJAX EDIT / DELETE MODAL
+===================================================== -->
+
+<div
+    id="patient-edit-modal"
+    class="patient-edit-modal"
+>
+
+
+    <div
+        class="patient-edit-modal-content"
+        id="patient-edit-modal-content"
+    >
+
+        <div
+            id="patient-edit-form-container"
+        >
+
+            <div class="ajax-loading">
+                Loading patient information...
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+document.addEventListener(
+    'DOMContentLoaded',
+    function () {
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const tableSection =
+            document.getElementById(
+                'patient-table-section'
+            );
+
+
+        const searchForm =
+            document.querySelector(
+                '.search-form'
+            );
+
+
+        const editModal =
+            document.getElementById(
+                'patient-edit-modal'
+            );
+
+
+        const editContainer =
+            document.getElementById(
+                'patient-edit-form-container'
+            );
+
+
+        const modalContent =
+            document.getElementById(
+                'patient-edit-modal-content'
+            );
+
+
+        /* =================================================
+           CLOSE MODAL
+        ================================================= */
+
+        function closeEditModal() {
+
+            editModal.classList.remove(
+                'show'
+            );
+
+            editContainer.innerHTML =
+                '<div class="ajax-loading">' +
+                'Loading patient information...' +
+                '</div>';
+
+        }
+
+
+        /* =================================================
+           OPEN MODAL
+        ================================================= */
+
+        function openEditModal() {
+
+            editModal.classList.add(
+                'show'
+            );
+
+        }
+
+
+        /* =================================================
+           LOAD PATIENT TABLE
+        ================================================= */
+
+        function loadPatientTable(
+            url,
+            updateHistory
+        ) {
+
+            return fetch(
+                url,
+                {
+                    headers: {
+                        'X-Requested-With':
+                            'XMLHttpRequest'
+                    }
+                }
+            )
+
+            .then(
+                function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Unable to load patient records.'
+                        );
+
+                    }
+
+                    return response.text();
+
+                }
+            )
+
+            .then(
+                function (html) {
+
+                    tableSection.innerHTML =
+                        html;
+
+
+                    if (updateHistory) {
+
+                        window.history.pushState(
+                            {},
+                            '',
+                            url
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           AJAX PAGINATION
+        ================================================= */
+
+        tableSection.addEventListener(
+            'click',
+            function (event) {
+
+
+                const paginationLink =
+                    event.target.closest(
+                        '.pagination-link'
+                    );
+
+
+                if (!paginationLink) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                loadPatientTable(
+                    paginationLink.href,
+                    true
+                )
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+                        window.location.href =
+                            paginationLink.href;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX SEARCH
+        ================================================= */
+
+        searchForm.addEventListener(
+            'submit',
+            function (event) {
+
+
+                event.preventDefault();
+
+
+                const formData =
+                    new FormData(
+                        searchForm
+                    );
+
+
+                const searchValue =
+                    (
+                        formData.get(
+                            'search'
+                        ) || ''
+                    ).trim();
+
+
+                const params =
+                    new URLSearchParams();
+
+
+                if (searchValue !== '') {
+
+                    params.set(
+                        'search',
+                        searchValue
+                    );
+
+                }
+
+
+                const url =
+                    window.location.pathname;
+
+
+                const searchUrl =
+                    params.toString()
+                        ? url +
+                          '?' +
+                          params.toString()
+                        : url;
+
+
+                loadPatientTable(
+                    searchUrl,
+                    true
+                )
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+                        window.location.href =
+                            searchUrl;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX CLEAR SEARCH
+        ================================================= */
+
+        searchForm.addEventListener(
+            'click',
+            function (event) {
+
+
+                const clearButton =
+                    event.target.closest(
+                        '.clear-button'
+                    );
+
+
+                if (!clearButton) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                loadPatientTable(
+                    clearButton.href,
+                    true
+                )
+
+                .then(
+                    function () {
+
+                        const input =
+                            searchForm.querySelector(
+                                '.search-input'
+                            );
+
+
+                        if (input) {
+
+                            input.value = '';
+
+                        }
+
+                    }
+                )
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+                        window.location.href =
+                            clearButton.href;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX EDIT - OPEN
+        ================================================= */
+
+        tableSection.addEventListener(
+            'click',
+            function (event) {
+
+
+                const editLink =
+                    event.target.closest(
+                        '.edit-patient-link'
+                    );
+
+
+                if (!editLink) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                openEditModal();
+
+
+                editContainer.innerHTML =
+                    '<div class="ajax-loading">' +
+                    'Loading patient information...' +
+                    '</div>';
+
+
+                fetch(
+                    editLink.href,
+                    {
+                        headers: {
+                            'X-Requested-With':
+                                'XMLHttpRequest'
+                        }
+                    }
+                )
+
+
+                .then(
+                    function (response) {
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                'Unable to load the patient form.'
+                            );
+
+                        }
+
+                        return response.text();
+
+                    }
+                )
+
+
+                .then(
+                    function (html) {
+
+                        editContainer.innerHTML =
+                            html;
+
+                    }
+                )
+
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        editContainer.innerHTML =
+                            '<div class="ajax-error">' +
+                            '<div>Unable to load the edit form.</div>' +
+                            '<button type="button" id="retry-edit">' +
+                            'Close' +
+                            '</button>' +
+                            '</div>';
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX EDIT - SUBMIT
+        ================================================= */
+
+        editContainer.addEventListener(
+            'submit',
+            function (event) {
+
+
+                const form =
+                    event.target.closest(
+                        '#ajax-patient-edit-form'
+                    );
+
+
+                if (!form) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                const submitButton =
+                    form.querySelector(
+                        '.save-button'
+                    );
+
+
+                const originalText =
+                    submitButton
+                        ? submitButton.textContent
+                        : 'Update Patient';
+
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        true;
+
+                    submitButton.textContent =
+                        'Updating...';
+
+                }
+
+
+                const formData =
+                    new FormData(
+                        form
+                    );
+
+
+                const currentTableUrl =
+                    window.location.pathname +
+                    window.location.search;
+
+
+                fetch(
+                    form.action,
+                    {
+                        method: 'POST',
+
+                        body: formData,
+
+                        headers: {
+                            'X-Requested-With':
+                                'XMLHttpRequest'
+                        }
+                    }
+                )
+
+
+                .then(
+                    async function (response) {
+
+                        const responseText =
+                            await response.text();
+
+
+                        return {
+
+                            response:
+                                response,
+
+                            text:
+                                responseText
+
+                        };
+
+                    }
+                )
+
+
+                .then(
+                    function (result) {
+
+
+                        const response =
+                            result.response;
+
+
+                        const html =
+                            result.text;
+
+
+                        if (
+                            response.ok &&
+                            html.trim() ===
+                                'success'
+                        ) {
+
+
+                            return loadPatientTable(
+                                currentTableUrl,
+                                false
+                            )
+
+
+                            .then(
+                                function () {
+
+                                    closeEditModal();
+
+                                }
+                            );
+
+                        }
+
+
+                        if (
+                            response.ok
+                        ) {
+
+                            editContainer.innerHTML =
+                                html;
+
+                            return;
+
+                        }
+
+
+                        throw new Error(
+                            'Unable to update patient.'
+                        );
+
+                    }
+                )
+
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        editContainer.innerHTML =
+                            '<div class="ajax-error">' +
+                            '<div>Unable to update the patient record.</div>' +
+                            '<button type="button" id="retry-edit-error">' +
+                            'Close' +
+                            '</button>' +
+                            '</div>';
+
+                    }
+                )
+
+
+                .finally(
+                    function () {
+
+                        if (submitButton) {
+
+                            submitButton.disabled =
+                                false;
+
+                            submitButton.textContent =
+                                originalText;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX DELETE - OPEN CONFIRMATION
+        ================================================= */
+
+        tableSection.addEventListener(
+            'click',
+            function (event) {
+
+
+                const deleteLink =
+                    event.target.closest(
+                        '.delete-button'
+                    );
+
+
+                if (!deleteLink) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                openEditModal();
+
+
+                editContainer.innerHTML =
+                    '<div class="ajax-loading">' +
+                    'Loading delete confirmation...' +
+                    '</div>';
+
+
+                fetch(
+                    deleteLink.href,
+                    {
+                        headers: {
+                            'X-Requested-With':
+                                'XMLHttpRequest'
+                        }
+                    }
+                )
+
+
+                .then(
+                    function (response) {
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                'Unable to load delete confirmation.'
+                            );
+
+                        }
+
+                        return response.text();
+
+                    }
+                )
+
+
+                .then(
+                    function (html) {
+
+                        editContainer.innerHTML =
+                            html;
+
+                    }
+                )
+
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        editContainer.innerHTML =
+                            '<div class="ajax-error">' +
+                            '<div>Unable to load the delete confirmation.</div>' +
+                            '<button type="button" id="retry-delete">' +
+                            'Close' +
+                            '</button>' +
+                            '</div>';
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           AJAX DELETE - SUBMIT
+        ================================================= */
+
+        editContainer.addEventListener(
+            'submit',
+            function (event) {
+
+
+                const form =
+                    event.target.closest(
+                        '#ajax-patient-delete-form'
+                    );
+
+
+                if (!form) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                const deleteButton =
+                    form.querySelector(
+                        '.ajax-confirm-delete'
+                    );
+
+
+                const originalText =
+                    deleteButton
+                        ? deleteButton.textContent
+                        : 'Delete Patient';
+
+
+                if (deleteButton) {
+
+                    deleteButton.disabled =
+                        true;
+
+                    deleteButton.textContent =
+                        'Deleting...';
+
+                }
+
+
+                const formData =
+                    new FormData(
+                        form
+                    );
+
+
+                const currentTableUrl =
+                    window.location.pathname +
+                    window.location.search;
+
+
+                fetch(
+                    form.action,
+                    {
+                        method: 'POST',
+
+                        body: formData,
+
+                        headers: {
+                            'X-Requested-With':
+                                'XMLHttpRequest'
+                        }
+                    }
+                )
+
+
+                .then(
+                    async function (response) {
+
+                        const responseText =
+                            await response.text();
+
+
+                        return {
+
+                            response:
+                                response,
+
+                            text:
+                                responseText
+
+                        };
+
+                    }
+                )
+
+
+                .then(
+                    function (result) {
+
+
+                        if (
+                            result.response.ok &&
+                            result.text.trim() ===
+                                'success'
+                        ) {
+
+
+                            return loadPatientTable(
+                                currentTableUrl,
+                                false
+                            )
+
+
+                            .then(
+                                function () {
+
+                                    closeEditModal();
+
+                                }
+                            );
+
+                        }
+
+
+                        throw new Error(
+                            'Unable to delete patient.'
+                        );
+
+                    }
+                )
+
+
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        editContainer.innerHTML =
+                            '<div class="ajax-error">' +
+                            '<div>Unable to delete the patient record.</div>' +
+                            '<button type="button" id="retry-delete-error">' +
+                            'Close' +
+                            '</button>' +
+                            '</div>';
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* =================================================
+           CLOSE / CANCEL BUTTONS
+        ================================================= */
+
+        editContainer.addEventListener(
+            'click',
+            function (event) {
+
+
+                const closeButton =
+                    event.target.closest(
+                        '#close-edit-form'
+                    );
+
+
+                const cancelEditButton =
+                    event.target.closest(
+                        '#cancel-edit-form'
+                    );
+
+
+                const cancelDeleteButton =
+                    event.target.closest(
+                        '#cancel-delete-form'
+                    );
+
+
+                const retryButton =
+                    event.target.closest(
+                        '#retry-edit'
+                    );
+
+
+                const retryErrorButton =
+                    event.target.closest(
+                        '#retry-edit-error'
+                    );
+
+
+                const retryDeleteButton =
+                    event.target.closest(
+                        '#retry-delete'
+                    );
+
+
+                const retryDeleteErrorButton =
+                    event.target.closest(
+                        '#retry-delete-error'
+                    );
+
+
+                if (
+                    closeButton ||
+                    cancelEditButton ||
+                    cancelDeleteButton ||
+                    retryButton ||
+                    retryErrorButton ||
+                    retryDeleteButton ||
+                    retryDeleteErrorButton
+                ) {
+
+                    event.preventDefault();
+
+                    closeEditModal();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           CLICK OUTSIDE MODAL
+        ================================================= */
+
+        editModal.addEventListener(
+            'click',
+            function (event) {
+
+
+                if (
+                    event.target ===
+                    editModal
+                ) {
+
+                    closeEditModal();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           PREVENT MODAL CONTENT CLICK
+           FROM CLOSING MODAL
+        ================================================= */
+
+        modalContent.addEventListener(
+            'click',
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* =================================================
+           ESC KEY
+        ================================================= */
+
+        document.addEventListener(
+            'keydown',
+            function (event) {
+
+
+                if (
+                    event.key === 'Escape' &&
+                    editModal.classList.contains(
+                        'show'
+                    )
+                ) {
+
+                    closeEditModal();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           BROWSER BACK / FORWARD
+        ================================================= */
+
+        window.addEventListener(
+            'popstate',
+            function () {
+
+
+                loadPatientTable(
+                    window.location.pathname +
+                    window.location.search,
+                    false
+                )
+
+
+                .catch(
+                    function () {
+
+                        window.location.reload();
+
+                    }
+                );
+
+            }
+        );
+
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

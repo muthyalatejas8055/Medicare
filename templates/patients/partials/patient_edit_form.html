@@ -1,0 +1,207 @@
+<div class="ajax-edit-form">
+
+    <div class="ajax-edit-header">
+        <h2>Edit Patient</h2>
+
+        <button
+            type="button"
+            class="ajax-close-button"
+            id="close-edit-form"
+        >
+            ×
+        </button>
+    </div>
+
+    <form
+        id="ajax-patient-edit-form"
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'patient_edit' patient.id %}"
+    >
+
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                    <div>{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+        <div class="ajax-form-grid">
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Patient ID
+                </label>
+
+                {{ form.patient_id }}
+
+                {% for error in form.patient_id.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Date of Birth
+                </label>
+
+                {{ form.date_of_birth }}
+
+                {% for error in form.date_of_birth.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Gender
+                </label>
+
+                {{ form.gender }}
+
+                {% for error in form.gender.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Phone
+                </label>
+
+                {{ form.phone }}
+
+                {% for error in form.phone.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Blood Group
+                </label>
+
+                {{ form.blood_group }}
+
+                {% for error in form.blood_group.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group">
+
+                <label>
+                    Emergency Contact
+                </label>
+
+                {{ form.emergency_contact }}
+
+                {% for error in form.emergency_contact.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group ajax-full">
+
+                <label>
+                    Address
+                </label>
+
+                {{ form.address }}
+
+                {% for error in form.address.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="ajax-form-group ajax-full">
+
+                <label>
+                    Medical Report (PDF)
+                </label>
+
+                {{ form.medical_report }}
+
+                {% if form.instance.medical_report %}
+                    <div class="current-file">
+                        Current report:
+
+                        <a
+                            href="{{ form.instance.medical_report.url }}"
+                            target="_blank"
+                        >
+                            View PDF
+                        </a>
+                    </div>
+                {% endif %}
+
+                {% for error in form.medical_report.errors %}
+                    <div class="error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <div class="ajax-form-actions">
+
+            <button
+                type="submit"
+                class="save-button"
+            >
+                Update Patient
+            </button>
+
+            <button
+                type="button"
+                class="cancel-button"
+                id="cancel-edit-form"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,267 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if edit_mode %}Edit Prescription{% else %}Add Prescription{% endif %}
+        | MediCare Plus
+    </title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+    <style>
+        .form-card {
+            background: white;
+            border: 1px solid #e7edf2;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 900px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d9e3e9;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #0b6e8e;
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .primary-button {
+            background: #0b6e8e;
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .secondary-button {
+            background: white;
+            color: #71859a;
+            text-decoration: none;
+            border: 1px solid #d9e3e9;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="logo">+</div>
+
+            <div>
+                <h2>MediCare Plus</h2>
+                <span>Hospital Management</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="{% url 'home' %}" class="nav-item">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}" class="nav-item">
+                <span>♙</span>
+                Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}" class="nav-item">
+                <span>⚕</span>
+                Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}" class="nav-item">
+                <span>◷</span>
+                Appointments
+            </a>
+
+            <a href="{% url 'prescription_list' %}" class="nav-item active">
+                <span>▤</span>
+                Prescriptions
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            {% if user.role == 'admin' %}
+                <a href="/admin/" class="nav-item">
+                    <span>⚙</span>
+                    Administration
+                </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <div>
+                <h1>
+                    {% if edit_mode %}
+                        Edit Prescription
+                    {% else %}
+                        Add Prescription
+                    {% endif %}
+                </h1>
+
+                <p>
+                    {% if edit_mode %}
+                        Update prescription information
+                    {% else %}
+                        Create a new patient prescription
+                    {% endif %}
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="form-card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="error-message">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="form-grid">
+
+                    {% for field in form %}
+
+                        <div class="form-group
+                            {% if field.name == 'instructions' %}
+                                full-width
+                            {% endif %}
+                        ">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% for error in field.errors %}
+                                <div class="error-message">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit" class="primary-button">
+                        {% if edit_mode %}
+                            Update Prescription
+                        {% else %}
+                            Save Prescription
+                        {% endif %}
+                    </button>
+
+                    <a
+                        href="{% url 'prescription_list' %}"
+                        class="secondary-button"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

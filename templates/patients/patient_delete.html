@@ -1,0 +1,47 @@
+<div class="ajax-delete-card">
+
+    <div class="ajax-delete-icon">
+        !
+    </div>
+
+    <h2>Delete Patient?</h2>
+
+    <p class="ajax-delete-message">
+        Are you sure you want to delete patient
+        <span class="ajax-patient-name">
+            {{ patient.patient_id }}
+        </span>?
+        <br>
+        This action cannot be undone.
+    </p>
+
+    <form
+        id="ajax-patient-delete-form"
+        method="POST"
+        action="{% url 'patient_delete' patient.id %}"
+    >
+
+        {% csrf_token %}
+
+        <div class="ajax-delete-buttons">
+
+            <button
+                type="submit"
+                class="ajax-confirm-delete"
+            >
+                Delete Patient
+            </button>
+
+            <button
+                type="button"
+                class="ajax-cancel-delete"
+                id="cancel-delete-form"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Appointments | MediCare Plus</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #164966;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #164966;
+            color: white;
+            padding: 35px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 55px;
+        }
+
+        .logo {
+            width: 58px;
+            height: 58px;
+            background: white;
+            color: #0c8db5;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .brand p {
+            font-size: 14px;
+            color: #d4e8f2;
+        }
+
+        .menu a {
+            display: block;
+            padding: 16px 18px;
+            margin-bottom: 7px;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            border-radius: 10px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #1185a5;
+        }
+
+        .content {
+            flex: 1;
+            padding: 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .topbar h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .topbar p {
+            color: #71879a;
+        }
+
+        .add-button {
+            background: #1185a5;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .add-button:hover {
+            background: #0d708b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+            overflow-x: auto;
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            font-size: 21px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th {
+            text-align: left;
+            background: #f4f7fb;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #edf1f4;
+            font-size: 15px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .edit-button {
+            color: #0c7ea1;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .delete-button {
+            color: #dc3545;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #7b8d9c;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="logo">
+                +
+            </div>
+
+            <div>
+                <h1>MediCare Plus</h1>
+                <p>Hospital Management</p>
+            </div>
+
+        </div>
+
+        <nav class="menu">
+
+            <a href="{% url 'home' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}">
+                Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}">
+                Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}" class="active">
+                Appointments
+            </a>
+
+            {% if user.role == 'admin' %}
+             <a href="/admin/">
+                Administration
+             </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="content">
+
+        <div class="topbar">
+
+            <div>
+
+                <h2>Appointments</h2>
+
+                <p>
+                    Manage patient appointments and schedules.
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'appointment_create' %}"
+                class="add-button"
+            >
+                + Add Appointment
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Appointment Records</h3>
+
+            {% if appointments %}
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for appointment in appointments %}
+
+                            <tr>
+
+                                <td>
+                                    {{ appointment.patient.patient_id }}
+                                </td>
+
+                                <td>
+                                    {{ appointment.doctor.doctor_id }}
+                                </td>
+
+                                <td>
+                                    {{ appointment.appointment_date }}
+                                </td>
+
+                                <td>
+                                    {{ appointment.appointment_time }}
+                                </td>
+
+                                <td>
+                                    {% if appointment.reason %}
+                                        {{ appointment.reason }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+
+                                <td>
+
+                                    <span class="status {{ appointment.status }}">
+                                        {{ appointment.get_status_display }}
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="{% url 'appointment_edit' appointment.id %}"
+                                        class="edit-button"
+                                    >
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'appointment_delete' appointment.id %}"
+                                        class="delete-button"
+                                    >
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+                                </table>
+
+                <div style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 15px;
+                    margin-top: 25px;
+                ">
+
+                    {% if appointments.has_previous %}
+                        <a
+                            href="?page={{ appointments.previous_page_number }}"
+                            style="
+                                padding: 8px 16px;
+                                text-decoration: none;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                color: #333;
+                            "
+                        >
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    <span style="font-weight: 500;">
+                        Page {{ appointments.number }}
+                        of
+                        {{ appointments.paginator.num_pages }}
+                    </span>
+
+                    {% if appointments.has_next %}
+                        <a
+                            href="?page={{ appointments.next_page_number }}"
+                            style="
+                                padding: 8px 16px;
+                                text-decoration: none;
+                                border: 1px solid #ddd;
+                                border-radius: 6px;
+                                color: #333;
+                            "
+                        >
+                            Next
+                        </a>
+                    {% endif %}
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty">
+
+                    <h3>No appointments found</h3>
+
+                    <p>
+                        Add your first appointment to start managing schedules.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

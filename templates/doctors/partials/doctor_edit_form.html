@@ -1,0 +1,182 @@
+<div class="doctor-edit-card">
+
+    <div class="doctor-edit-header">
+
+        <div>
+            <h2>Edit Doctor</h2>
+            <p>Update the doctor's professional information.</p>
+        </div>
+
+        <button
+            type="button"
+            class="doctor-modal-close"
+            id="doctor-edit-close"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <form
+        method="POST"
+        action="{% url 'doctor_edit' doctor.id %}"
+        id="doctor-edit-form"
+    >
+
+        {% csrf_token %}
+
+
+        <div class="doctor-edit-grid">
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.doctor_id.id_for_label }}">
+                    Doctor ID
+                </label>
+
+                {{ form.doctor_id }}
+
+                {% for error in form.doctor_id.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.specialization.id_for_label }}">
+                    Specialization
+                </label>
+
+                {{ form.specialization }}
+
+                {% for error in form.specialization.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.qualification.id_for_label }}">
+                    Qualification
+                </label>
+
+                {{ form.qualification }}
+
+                {% for error in form.qualification.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.phone.id_for_label }}">
+                    Phone
+                </label>
+
+                {{ form.phone }}
+
+                {% for error in form.phone.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.experience.id_for_label }}">
+                    Experience (Years)
+                </label>
+
+                {{ form.experience }}
+
+                {% for error in form.experience.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field">
+
+                <label for="{{ form.consultation_fee.id_for_label }}">
+                    Consultation Fee (₹)
+                </label>
+
+                {{ form.consultation_fee }}
+
+                {% for error in form.consultation_fee.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+            <div class="doctor-edit-field doctor-edit-available">
+
+                <label for="{{ form.available.id_for_label }}">
+
+                    {{ form.available }}
+
+                    <span>
+                        Doctor is Available
+                    </span>
+
+                </label>
+
+                {% for error in form.available.errors %}
+                    <div class="doctor-edit-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+
+        <div class="doctor-edit-buttons">
+
+            <button
+                type="submit"
+                class="doctor-update-button"
+            >
+                Update Doctor
+            </button>
+
+
+            <button
+                type="button"
+                class="doctor-cancel-button"
+                id="doctor-edit-cancel"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+
+    </form>
+
+</div>

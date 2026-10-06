@@ -1,0 +1,311 @@
+<div class="doctor-table-wrapper">
+
+
+    <div
+        data-doctor-count="{{ doctors.paginator.count }}"
+        style="display: none;"
+    ></div>
+
+
+    {% if doctors %}
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Doctor ID
+                        </th>
+
+                        <th>
+                            Specialization
+                        </th>
+
+                        <th>
+                            Qualification
+                        </th>
+
+                        <th>
+                            Phone
+                        </th>
+
+                        <th>
+                            Experience
+                        </th>
+
+                        <th>
+                            Consultation Fee
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for doctor in doctors %}
+
+
+                        <tr>
+
+
+                            <td>
+
+                                <span class="doctor-id">
+                                    {{ doctor.doctor_id }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="specialization">
+                                    {{ doctor.specialization }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+                                {{ doctor.qualification }}
+                            </td>
+
+
+                            <td>
+                                {{ doctor.phone }}
+                            </td>
+
+
+                            <td>
+
+                                <span class="experience">
+
+                                    {{ doctor.experience }}
+                                    year{{ doctor.experience|pluralize }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="fee">
+
+                                    ₹{{ doctor.consultation_fee }}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+
+                                {% if doctor.available %}
+
+                                    <span class="status available">
+                                        Available
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status unavailable">
+                                        Unavailable
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <td>
+
+
+                                <div class="actions">
+
+
+                                    <a
+                                        href="{% url 'doctor_profile' doctor.id %}"
+                                        class="action-btn view-btn"
+                                    >
+                                        View Profile
+                                    </a>
+
+
+                                    <a
+                                        href="{% url 'doctor_edit' doctor.id %}"
+                                        class="action-btn edit-btn"
+                                    >
+                                        Edit
+                                    </a>
+
+
+                                    <a
+                                        href="{% url 'doctor_delete' doctor.id %}"
+                                        class="action-btn delete-btn"
+                                    >
+                                        Delete
+                                    </a>
+
+
+                                </div>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             PAGINATION
+        ====================================== -->
+
+        {% if doctors.has_other_pages %}
+
+
+            <div class="pagination">
+
+
+                {% if doctors.has_previous %}
+
+                    <a
+                        href="?page={{ doctors.previous_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}"
+                        class="page-link"
+                    >
+                        Previous
+                    </a>
+
+                {% else %}
+
+                    <span class="page-link page-disabled">
+                        Previous
+                    </span>
+
+                {% endif %}
+
+
+
+                {% for num in doctors.paginator.page_range %}
+
+
+                    {% if doctors.number == num %}
+
+                        <span
+                            class="page-link page-current"
+                        >
+                            {{ num }}
+                        </span>
+
+                    {% else %}
+
+                        <a
+                            href="?page={{ num }}{% if search %}&search={{ search|urlencode }}{% endif %}"
+                            class="page-link"
+                        >
+                            {{ num }}
+                        </a>
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+
+
+                {% if doctors.has_next %}
+
+                    <a
+                        href="?page={{ doctors.next_page_number }}{% if search %}&search={{ search|urlencode }}{% endif %}"
+                        class="page-link"
+                    >
+                        Next
+                    </a>
+
+                {% else %}
+
+                    <span class="page-link page-disabled">
+                        Next
+                    </span>
+
+                {% endif %}
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    {% else %}
+
+
+        <div class="empty-state">
+
+
+            <div class="empty-icon">
+                ⚕
+            </div>
+
+
+            <h3>
+                No Doctors Found
+            </h3>
+
+
+            {% if search %}
+
+                <p>
+                    No doctors match your search for
+                    "{{ search }}".
+                </p>
+
+            {% else %}
+
+                <p>
+                    No doctors have been added yet.
+                </p>
+
+            {% endif %}
+
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>

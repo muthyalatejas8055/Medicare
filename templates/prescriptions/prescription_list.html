@@ -1,0 +1,215 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prescriptions | MediCare Plus</title>
+
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">+</div>
+            <div>
+                <h2>MediCare Plus</h2>
+                <p>Hospital Management</p>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="{% url 'home' %}" class="nav-item">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}" class="nav-item">
+                <span>♙</span>
+                Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}" class="nav-item">
+                <span>⚕</span>
+                Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}" class="nav-item">
+                <span>◷</span>
+                Appointments
+            </a>
+
+            <a href="{% url 'prescription_list' %}" class="nav-item active">
+                <span>▤</span>
+                Prescriptions
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            {% if user.role == 'admin' %}
+                <a href="/admin/" class="nav-item">
+                    <span>⚙</span>
+                    Administration
+                </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="nav-item logout">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Prescriptions</h1>
+                <p>Manage patient prescriptions</p>
+            </div>
+
+            <a href="{% url 'prescription_create' %}" class="primary-button">
+                + Add Prescription
+            </a>
+
+        </header>
+
+
+        <section class="content-card">
+
+            <div class="card-header">
+                <div>
+                    <h3>Prescription Records</h3>
+                    <p>View and manage prescribed medicines</p>
+                </div>
+            </div>
+
+
+            {% if prescriptions %}
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Medicine</th>
+                                <th>Dosage</th>
+                                <th>Frequency</th>
+                                <th>Duration</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for prescription in prescriptions %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ prescription.patient.patient_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ prescription.doctor.doctor_id }}
+                                    </td>
+
+                                    <td>
+                                        <strong>
+                                            {{ prescription.medicine_name }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ prescription.dosage }}
+                                    </td>
+
+                                    <td>
+                                        {{ prescription.frequency }}
+                                    </td>
+
+                                    <td>
+                                        {{ prescription.duration }}
+                                    </td>
+
+                                    <td>
+                                        {{ prescription.prescribed_date }}
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'prescription_edit' prescription.id %}"
+                                            class="action-link edit"
+                                        >
+                                            Edit
+                                        </a>
+
+                                        <a
+                                            href="{% url 'prescription_delete' prescription.id %}"
+                                            class="action-link delete"
+                                        >
+                                            Delete
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">▤</div>
+
+                    <h3>No prescriptions found</h3>
+
+                    <p>
+                        There are currently no prescription records.
+                    </p>
+
+                    <a
+                        href="{% url 'prescription_create' %}"
+                        class="primary-button"
+                    >
+                        + Add First Prescription
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

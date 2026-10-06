@@ -1,0 +1,1554 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        MediCare Plus | Dashboard
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f7fa;
+            color: #183b50;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 50vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            width: 250px;
+            min-height: 50vh;
+
+            background: #123f5b;
+            color: white;
+
+            padding: 28px 18px;
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 0 10px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+
+            background: white;
+            color: #123f5b;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .sidebar-brand h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-brand span {
+            font-size: 12px;
+            color: #c6d9e5;
+        }
+
+        .navigation {
+            margin-top: 28px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            text-decoration: none;
+            color: #dbe9f0;
+
+            padding: 14px 16px;
+            margin-bottom: 7px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #1d5879;
+            color: white;
+        }
+
+        .nav-item span {
+            width: 22px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 25px;
+        }
+
+        .logout {
+            color: #ffd5d5;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main-content {
+            margin-left: 270px;
+            width: calc(100% - 270px);
+
+            padding: 30px 38px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+            color: #123f5b;
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #708594;
+            font-size: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 50%;
+
+            background: #123f5b;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            color: #173e53;
+        }
+
+        .user-info small {
+            color: #7c909d;
+        }
+
+        /* ================= WELCOME ================= */
+
+        .welcome-card {
+            background: linear-gradient(
+                135deg,
+                #123f5b,
+                #1d6488
+            );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 10px 30px rgba(18,63,91,0.12);
+        }
+
+        .welcome-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: 0.75;
+        }
+
+        .welcome-card h2 {
+            font-size: 25px;
+            margin: 8px 0;
+        }
+
+        .welcome-card p {
+            color: #d4e7f0;
+            font-size: 14px;
+        }
+
+        .welcome-icon {
+            width: 75px;
+            height: 75px;
+
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 45px;
+        }
+
+        /* ================= STATISTICS ================= */
+
+        .statistics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 16px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.04);
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 12px;
+
+            background: #eaf3f8;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+        }
+
+        .stat-card span {
+            display: block;
+            color: #7b8d98;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card strong {
+            font-size: 23px;
+            color: #173f54;
+        }
+
+        /* ================= FILE MANAGEMENT ================= */
+
+        .file-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 20px;
+            color: #173f54;
+            margin-bottom: 5px;
+        }
+
+        .section-heading p {
+            font-size: 13px;
+            color: #7b8d98;
+        }
+
+        .file-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .file-box {
+            border: 1px solid #e2eaf0;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            background: #fbfdfe;
+        }
+
+        .file-box h3 {
+            font-size: 16px;
+            color: #173f54;
+
+            margin-bottom: 7px;
+        }
+
+        .file-box p {
+            font-size: 12px;
+            color: #7b8d98;
+
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+
+            border: 1px solid #d8e3e9;
+
+            border-radius: 8px;
+
+            padding: 11px;
+
+            background: white;
+
+            font-size: 13px;
+
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="file"]:focus {
+            border-color: #34799a;
+        }
+
+        .action-button {
+            border: none;
+
+            border-radius: 8px;
+
+            padding: 11px 15px;
+
+            background:green;
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+        .action-button:hover {
+            background: #1d6488;
+        }
+
+        .download-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .download-form input {
+            flex: 1;
+        }
+
+        /* ================= MESSAGES ================= */
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 13px 16px;
+
+            border-radius: 9px;
+
+            background: #eaf7ef;
+            color: #237244;
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+        }
+
+        /* ================= PATIENT TABLE ================= */
+
+        .data-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            background: #f5f8fa;
+
+            color: #657b88;
+
+            padding: 13px;
+
+            font-size: 12px;
+        }
+
+        td {
+            padding: 14px 13px;
+
+            border-bottom: 1px solid #edf1f3;
+
+            color: #304f60;
+
+            font-size: 13px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .patient-id {
+            font-weight: bold;
+            color: #123f5b;
+        }
+
+        /* ================= PAGINATION ================= */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 22px;
+        }
+
+        .pagination a,
+        .pagination span {
+            min-width: 35px;
+            height: 35px;
+
+            padding: 0 10px;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-decoration: none;
+
+            font-size: 13px;
+        }
+
+        .pagination a {
+            background: #f0f5f8;
+            color: #123f5b;
+        }
+
+        .pagination a:hover {
+            background: #123f5b;
+            color: white;
+        }
+
+        .pagination .current {
+            background: #123f5b;
+            color: white;
+        }
+
+        /* ================= APPOINTMENTS ================= */
+
+        .appointments-card {
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .view-all {
+            color: #17658a;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fff4d8;
+            color: #a96e00;
+        }
+
+        .status-confirmed {
+            background: #e5f1fb;
+            color: #1769aa;
+        }
+
+        .status-completed {
+            background: #e8f6ed;
+            color: #218653;
+        }
+
+        .status-cancelled {
+            background: #fdeaea;
+            color: #c0392b;
+        }
+
+        .empty-state {
+            padding: 35px;
+            text-align: center;
+            color: #82929c;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .statistics {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+                width: calc(100% - 220px);
+                padding: 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .dashboard {
+                display: block;
+            }
+
+            .sidebar-bottom {
+                position: static;
+                margin-top: 20px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .statistics {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row,
+            .download-form {
+                flex-direction: column;
+            }
+
+            .welcome-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="logo">
+                +
+            </div>
+
+            <div>
+
+                <h2>
+                    MediCare Plus
+                </h2>
+
+                <span>
+                    Hospital Management
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="navigation">
+
+            <a
+                href="{% url 'home' %}"
+                class="nav-item active"
+            >
+                <span>▦</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="{% url 'patient_list' %}"
+                class="nav-item"
+            >
+                <span>♙</span>
+                Patients
+            </a>
+
+
+            <a
+                href="{% url 'doctor_list' %}"
+                class="nav-item"
+            >
+                <span>⚕</span>
+                Doctors
+            </a>
+
+
+            <a
+                href="{% url 'appointment_list' %}"
+                class="nav-item"
+            >
+                <span>◷</span>
+                Appointments
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            {% if user.role == 'admin' %}
+
+                <a
+                    href="/admin/"
+                    class="nav-item"
+                >
+                    <span>⚙</span>
+                    Administration
+                </a>
+
+                <a
+                    href="{% url 'create_user' %}"
+                    class="nav-item"
+                >
+                    <span>👤</span>
+                    Create User
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="nav-item logout"
+            >
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Hospital overview and patient record management
+                </p>
+
+            </div>
+
+
+            <div class="user-info">
+
+                <div class="user-avatar">
+
+                    {{ request.user.username|first|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ request.user.username }}
+                    </strong>
+
+                    <small>
+                        {{ request.user.role|title }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME -->
+
+        <section class="welcome-card">
+
+            <div>
+
+                <span class="welcome-label">
+                    MEDICARE PLUS
+                </span>
+
+                <h2>
+                    Welcome back, {{ request.user.username }}!
+                </h2>
+
+                <p>
+                    Manage patient records and hospital operations
+                    from one place.
+                </p>
+
+            </div>
+
+            <div class="welcome-icon">
+                +
+            </div>
+
+        </section>
+
+
+        <!-- MESSAGES -->
+
+        {% if messages %}
+
+            <div class="messages">
+
+                {% for message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- STATISTICS -->
+
+        <section class="statistics">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ♙
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Patients
+                    </span>
+
+                    <strong>
+                        {{ patient_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⚕
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Doctors
+                    </span>
+
+                    <strong>
+                        {{ doctor_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ◷
+                </div>
+
+                <div>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                    <strong>
+                        {{ appointment_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟡
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong>
+                        {{ pending_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔵
+                </div>
+
+                <div>
+
+                    <span>
+                        Confirmed
+                    </span>
+
+                    <strong>
+                        {{ confirmed_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <span>
+                        Completed
+                    </span>
+
+                    <strong>
+                        {{ completed_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔴
+                </div>
+
+                <div>
+
+                    <span>
+                        Cancelled
+                    </span>
+
+                    <strong>
+                        {{ cancelled_count }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ================= FILE MANAGEMENT ================= -->
+
+        <section class="file-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Patient File Management
+                    </h2>
+
+                    <p>
+                        Upload and download patient records
+                        directly from the dashboard.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="file-grid">
+
+
+                <!-- UPLOAD PDF -->
+
+                <div class="file-box">
+
+                    <h3>
+                        📄 Upload Patient PDF
+                    </h3>
+
+                    <p>
+                        Upload a medical report for an existing patient.
+                        Maximum size: 5 MB.
+                    </p>
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'dashboard_upload_pdf' %}"
+                        enctype="multipart/form-data"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <div class="form-row">
+
+                            <input
+                                type="text"
+                                name="patient_id"
+                                placeholder="Patient ID"
+                                required
+                            >
+
+                            <input
+                                type="file"
+                                name="pdf_file"
+                                accept=".pdf,application/pdf"
+                                required
+                            >
+
+                            <button
+                                type="submit"
+                                class="action-button"
+                            >
+                                Upload PDF
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- UPLOAD EXCEL -->
+
+                <div class="file-box">
+
+                    <h3>
+                        📊 Upload Patient Excel
+                    </h3>
+
+                    <p>
+                        Import patient records from an .xlsx file.
+                    </p>
+
+
+                    <form
+                        method="POST"
+                        action="{% url 'dashboard_upload_excel' %}"
+                        enctype="multipart/form-data"
+                    >
+
+                        {% csrf_token %}
+
+
+                        <div class="form-row">
+
+                            <input
+                                type="file"
+                                name="excel_file"
+                                accept=".xlsx"
+                                required
+                            >
+
+                            <button
+                                type="submit"
+                                class="action-button"
+                            >
+                                Upload Excel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+                <!-- DOWNLOAD PDF -->
+
+                <div class="file-box">
+
+                    <h3>
+                        📥 Download Patient PDF
+                    </h3>
+
+                    <p>
+                        Generate and download a PDF report
+                        for a patient.
+                    </p>
+
+
+                    <form
+                        method="GET"
+                        action="{% url 'dashboard_download_pdf' %}"
+                        class="download-form"
+                    >
+
+                        <input
+                            type="text"
+                            name="patient_id"
+                            placeholder="Enter Patient ID"
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            class="action-button"
+                        >
+                            Download PDF
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+                <!-- DOWNLOAD EXCEL -->
+
+                <div class="file-box">
+
+                    <h3>
+                        📥 Download Patient Excel
+                    </h3>
+
+                    <p>
+                        Download all patient records
+                        in Excel format.
+                    </p>
+
+
+                    <a
+                        href="{% url 'dashboard_download_excel' %}"
+                        class="action-button"
+                        style="
+                            display:inline-block;
+                            text-decoration:none;
+                        "
+                    >
+                        Download Excel
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PATIENT RECORDS ================= -->
+
+        <section class="data-card" id="patient-records">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Patient Records
+                    </h2>
+
+                    <p>
+                        10 patient records displayed per page.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{% url 'patient_list' %}"
+                    class="view-all"
+                >
+                    Manage Patients
+                </a>
+
+            </div>
+
+
+            {% if patients %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient ID
+                                </th>
+
+                                <th>
+                                    Gender
+                                </th>
+
+                                <th>
+                                    Date of Birth
+                                </th>
+
+                                <th>
+                                    Phone
+                                </th>
+
+                                <th>
+                                    Blood Group
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for patient in patients %}
+
+                                <tr>
+
+                                    <td class="patient-id">
+                                        {{ patient.patient_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ patient.get_gender_display }}
+                                    </td>
+
+                                    <td>
+                                        {{ patient.date_of_birth }}
+                                    </td>
+
+                                    <td>
+                                        {{ patient.phone }}
+                                    </td>
+
+                                    <td>
+                                        {{ patient.blood_group|default:"Not provided" }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+
+                {% if patients.paginator.num_pages > 1 %}
+
+                    <div class="pagination">
+
+                        {% if patients.has_previous %}
+
+                            <a
+                                href="?page={{ patients.previous_page_number }}#patient-records"
+                            >
+                                ‹
+                            </a>
+
+                        {% endif %}
+
+
+                        {% for page_num in patients.paginator.page_range %}
+
+                            {% if page_num == patients.number %}
+
+                                <span class="current">
+                                    {{ page_num }}
+                                </span>
+
+                            {% else %}
+
+                                <a
+                                   href="?page={{ page_num }}#patient-records"
+                                >
+                                    {{ page_num }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                        {% if patients.has_next %}
+
+                            <a
+                                href="?page={{ patients.next_page_number }}"
+                            >
+                                ›
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>
+                        No patient records yet
+                    </h3>
+
+                    <p>
+                        Upload an Excel file or add patients
+                        from the Patients section.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ================= RECENT APPOINTMENTS ================= -->
+
+        <section class="appointments-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>
+                        Recent Appointments
+                    </h2>
+
+                    <p>
+                        Latest appointments registered in the system.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{% url 'appointment_list' %}"
+                    class="view-all"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if recent_appointments %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Patient
+                                </th>
+
+                                <th>
+                                    Doctor
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Time
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for appointment in recent_appointments %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ appointment.patient.patient_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ appointment.doctor.doctor_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ appointment.appointment_date }}
+                                    </td>
+
+                                    <td>
+                                        {{ appointment.appointment_time }}
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            class="status status-{{ appointment.status }}"
+                                        >
+                                            {{ appointment.status|title }}
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>
+                        No appointments yet
+                    </h3>
+
+                    <p>
+                        Appointments will appear here once
+                        they are added to the system.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+</div>
+<script>
+
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+</script>
+
+</body>
+
+</html>

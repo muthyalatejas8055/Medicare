@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create User | MediCare Plus</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #164966;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #164966;
+            color: white;
+            padding: 35px 25px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 55px;
+        }
+
+        .logo {
+            width: 58px;
+            height: 58px;
+            background: white;
+            color: #0c8db5;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: bold;
+        }
+
+        .brand h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .brand p {
+            font-size: 14px;
+            color: #d4e8f2;
+        }
+
+        .menu a {
+            display: block;
+            padding: 16px 18px;
+            margin-bottom: 7px;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            border-radius: 10px;
+        }
+
+        .menu a:hover,
+        .menu .active {
+            background: #1185a5;
+        }
+
+        .content {
+            flex: 1;
+            padding: 45px;
+        }
+
+        .topbar {
+            margin-bottom: 30px;
+        }
+
+        .topbar h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .topbar p {
+            color: #71879a;
+        }
+
+        .card {
+            background: white;
+            max-width: 850px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d8e1e8;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #1185a5;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .save-button,
+        .cancel-button {
+            padding: 13px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .save-button {
+            background: #1185a5;
+            color: white;
+        }
+
+        .save-button:hover {
+            background: #0d708b;
+        }
+
+        .cancel-button {
+            background: #e9eef2;
+            color: #164966;
+        }
+
+        .cancel-button:hover {
+            background: #dce4e9;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo">+</div>
+
+            <div>
+                <h1>MediCare Plus</h1>
+                <p>Hospital Management</p>
+            </div>
+        </div>
+
+        <nav class="menu">
+
+            <a href="{% url 'home' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}">
+                Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}">
+                Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}">
+                Appointments
+            </a>
+
+            {% if user.role == 'admin' %}
+                <a href="/admin/" class="active">
+                    Administration
+                </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="content">
+
+        <div class="topbar">
+
+            <h2>Create User</h2>
+
+            <p>
+                Create a new Doctor or Staff account.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="form-grid">
+
+                    {% for field in form %}
+
+                        <div class="form-group">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% for error in field.errors %}
+                                <div class="error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button type="submit" class="save-button">
+                        Create User
+                    </button>
+
+                    <a href="{% url 'home' %}" class="cancel-button">
+                        Cancel
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

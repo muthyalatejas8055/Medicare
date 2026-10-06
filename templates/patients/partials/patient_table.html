@@ -1,0 +1,172 @@
+{% if patients %}
+
+<div class="table-container">
+
+    <table class="patient-table">
+
+        <thead>
+            <tr>
+
+                <th>
+                    Patient ID
+                </th>
+
+                <th>
+                    Gender
+                </th>
+
+                <th>
+                    Date of Birth
+                </th>
+
+                <th>
+                    Phone
+                </th>
+
+                <th>
+                    Blood Group
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for patient in patients %}
+
+            <tr>
+
+                <td class="patient-id">
+                    {{ patient.patient_id }}
+                </td>
+
+                <td>
+                    {{ patient.get_gender_display }}
+                </td>
+
+                <td>
+                    {{ patient.date_of_birth }}
+                </td>
+
+                <td>
+                    {{ patient.phone }}
+                </td>
+
+                <td>
+
+                    {% if patient.blood_group %}
+                        {{ patient.blood_group }}
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <a
+                            href="{% url 'patient_edit' patient.id %}"
+                            class="edit-button edit-patient-link"
+                        >
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'patient_delete' patient.id %}"
+                            class="delete-button"
+                        >
+                            Delete
+                        </a>
+
+                        <a
+                            href="{% url 'patient_download_pdf' patient.id %}"
+                            class="pdf-button"
+                        >
+                            📄 Download PDF
+                        </a>
+
+                        <a
+                            href="{% url 'patient_download_excel' %}"
+                        >
+                            📊 Download Excel
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+<!-- PAGINATION -->
+
+<div class="pagination">
+
+    {% if patients.has_previous %}
+
+        <a
+            href="?page={{ patients.previous_page_number }}{% if search %}&search={{ search }}{% endif %}"
+            class="pagination-link"
+        >
+            ← Previous
+        </a>
+
+    {% endif %}
+
+
+    <span>
+        Page {{ patients.number }}
+        of
+        {{ patients.paginator.num_pages }}
+    </span>
+
+
+    {% if patients.has_next %}
+
+        <a
+            href="?page={{ patients.next_page_number }}{% if search %}&search={{ search }}{% endif %}"
+            class="pagination-link"
+        >
+            Next →
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+    <h3>
+        No patients found
+    </h3>
+
+    <p>
+        There are currently no patients registered.
+    </p>
+
+    <a
+        href="{% url 'patient_create' %}"
+        class="add-button"
+    >
+        Add First Patient
+    </a>
+
+</div>
+
+{% endif %}

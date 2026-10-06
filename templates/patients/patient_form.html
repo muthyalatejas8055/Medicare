@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% if edit_mode %}
+            Edit Patient - MediCare Plus
+        {% else %}
+            Add Patient - MediCare Plus
+        {% endif %}
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #17324d;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 280px;
+            min-height: 100vh;
+            background: #123f5b;
+            color: white;
+            padding: 36px 24px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            margin-bottom: 55px;
+            padding-left: 14px;
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .brand p {
+            margin-top: 6px;
+            color: #b8d1df;
+            font-size: 13px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 16px 18px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #087e9f;
+        }
+
+        /* MAIN */
+
+        .main {
+            flex: 1;
+            padding: 42px 48px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 34px;
+            color: #173b5d;
+        }
+
+        .header p {
+            color: #71859a;
+            font-size: 16px;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+            border-radius: 14px;
+            padding: 32px;
+            max-width: 950px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #31546d;
+            font-size: 15px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d4dee6;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #087fa5;
+            box-shadow: 0 0 0 2px rgba(8, 127, 165, 0.08);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* PDF UPLOAD */
+
+        .file-upload {
+            padding: 18px;
+            background: #f8fbfc;
+            border: 1px solid #dce9ee;
+            border-radius: 10px;
+        }
+
+        .file-upload input[type="file"] {
+            padding: 10px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .file-help {
+            margin-top: 7px;
+            font-size: 13px;
+            color: #71859a;
+        }
+
+        .current-file {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #eef8f2;
+            border-radius: 7px;
+            color: #218653;
+            font-size: 14px;
+        }
+
+        .current-file a {
+            color: #1769aa;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .current-file a:hover {
+            text-decoration: underline;
+        }
+
+        /* ERRORS */
+
+        .error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .form-errors {
+            margin-bottom: 20px;
+            padding: 14px 16px;
+            background: #fdecec;
+            border: 1px solid #f2cccc;
+            border-radius: 8px;
+            color: #c0392b;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .save-button {
+            border: none;
+            background: #087fa5;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .save-button:hover {
+            background: #066d8d;
+        }
+
+        .cancel-button {
+            background: #e9eef2;
+            color: #31546d;
+            padding: 13px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cancel-button:hover {
+            background: #dce5eb;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .main {
+                padding: 30px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                padding: 20px;
+            }
+
+            .brand {
+                margin-bottom: 20px;
+            }
+
+            .nav a {
+                padding: 12px 15px;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .save-button,
+            .cancel-button {
+                text-align: center;
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <h2>MediCare Plus</h2>
+
+            <p>
+                Hospital Management
+            </p>
+
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="{% url 'home' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'patient_list' %}" class="active">
+                Patients
+            </a>
+
+            <a href="{% url 'doctor_list' %}">
+                Doctors
+            </a>
+
+            <a href="{% url 'appointment_list' %}">
+                Appointments
+            </a>
+
+            {% if user.role == 'admin' %}
+
+                <a href="/admin/">
+                    Administration
+                </a>
+
+            {% endif %}
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+
+        <div class="header">
+
+            <h1>
+
+                {% if edit_mode %}
+
+                    Edit Patient
+
+                {% else %}
+
+                    Add Patient
+
+                {% endif %}
+
+            </h1>
+
+
+            <p>
+
+                {% if edit_mode %}
+
+                    Update patient information
+
+                {% else %}
+
+                    Register a new patient in MediCare Plus
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+
+        <div class="form-card">
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+
+                {% if form.non_field_errors %}
+
+                    <div class="form-errors">
+
+                        {% for error in form.non_field_errors %}
+
+                            <div>
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- PATIENT ID -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Patient ID
+                        </label>
+
+                        {{ form.patient_id }}
+
+                        {% for error in form.patient_id.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Date of Birth
+                        </label>
+
+                        {{ form.date_of_birth }}
+
+                        {% for error in form.date_of_birth.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- GENDER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Gender
+                        </label>
+
+                        {{ form.gender }}
+
+                        {% for error in form.gender.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% for error in form.phone.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- BLOOD GROUP -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Blood Group
+                        </label>
+
+                        {{ form.blood_group }}
+
+                        {% for error in form.blood_group.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- EMERGENCY CONTACT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Emergency Contact
+                        </label>
+
+                        {{ form.emergency_contact }}
+
+                        {% for error in form.emergency_contact.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Address
+                        </label>
+
+                        {{ form.address }}
+
+                        {% for error in form.address.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- MEDICAL REPORT PDF -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Medical Report (PDF)
+                        </label>
+
+                        <div class="file-upload">
+
+                            {{ form.medical_report }}
+
+                            <div class="file-help">
+                                Upload a PDF medical report. Maximum file size: 5 MB.
+                            </div>
+
+
+                            {% if form.medical_report.value %}
+
+                                <div class="current-file">
+
+                                    Current report:
+
+                                    <a
+                                        href="{{ form.instance.medical_report.url }}"
+                                        target="_blank"
+                                    >
+                                        View PDF
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        {% for error in form.medical_report.errors %}
+
+                            <div class="error">
+                                {{ error }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="actions">
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+
+                        {% if edit_mode %}
+
+                            Update Patient
+
+                        {% else %}
+
+                            Save Patient
+
+                        {% endif %}
+
+                    </button>
+
+
+                    <a
+                        href="{% url 'patient_list' %}"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </a>
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+</body>
+
+</html>
