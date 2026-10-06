@@ -38,3 +38,6 @@ medicare/
 ├── static/
 ├── templates/
 └── manage.py
+## Development
+
+This project is actively maintained for learning and development.
