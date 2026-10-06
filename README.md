@@ -1,6 +1,6 @@
 # Medicare Hospital Management System
 
-A Django-based Hospital Management System designed to manage patients, doctors, appointments, prescriptions, and user accounts.
+A Django-based Hospital Management System designed to manage patients, doctors, appointments, prescriptions, and user accounts through a web-based application.
 
 ## Features
 
@@ -9,21 +9,32 @@ A Django-based Hospital Management System designed to manage patients, doctors, 
 - Appointment management
 - Prescription management
 - User account management
-- Django-based web application
+- Django-based web interface
+- Database-backed CRUD operations
 
-## Technology
+## Technologies Used
 
 - Python
 - Django
 - HTML
 - CSS
 - JavaScript
-- SQLite (local development)
+- SQLite
 
-## Project Status
+## Project Structure
 
-This project is currently under development and is intended for learning and demonstration purposes.
-
-## Author
-
-Tejas
+```text
+medicare/
+├── accounts/
+├── appointments/
+├── appointment_management/
+├── doctor_management/
+├── doctors/
+├── patient_management/
+├── patients/
+├── prescription_management/
+├── user_accounts/
+├── medicare/
+├── static/
+├── templates/
+└── manage.py
